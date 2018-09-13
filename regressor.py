@@ -17,9 +17,16 @@ class Regressor:
     def __init__(self, input_dim):
         self.weights = np.random.rand(input_dim + 1)
         self.losses = []
+        self.epoch_losses = []
 
     def inference(self, x):
         return sigmoid(np.dot(x, self.weights))
+
+    def eval(self, inputs, labels):
+        inputs = np.array([np.concatenate(([-1], x)) for x in inputs])
+        outputs = self.inference(inputs)
+        ys = np.where(outputs > .5, 1, 0)
+        return np.mean(mse(labels, outputs)), np.sum(ys == labels) / len(inputs)
 
     def compute_gradient(self, batch):
         x, r = batch
@@ -42,16 +49,14 @@ class Regressor:
             cost_grad = self.compute_gradient(batch)
             self.weights -= lr * cost_grad
 
+        self.epoch_losses += [np.mean(self.losses[-len(inputs):])] * len(batches)
 
         print("Accuracy: ", correct / n)
 
     def plot_loss(self):
         fig, ax = plt.subplots()
-
         ax.set_ylabel("Loss")
-        ax.set_xlabel("Iterations")
-
-        ax.plot(range(len(self.losses)), self.losses)
-        
-
-    
+        ax.set_xlabel("Steps")
+        ax.plot(range(len(self.losses)), self.losses, color='blue',  label="Avg Loss Per Step")
+        ax.step(range(len(self.epoch_losses)), self.epoch_losses, color='red', label="Avg Loss Per Epochs")
+        ax.legend(loc='best')

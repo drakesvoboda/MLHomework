@@ -1,0 +1,78 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+ 
+\title{Machine Learning Homework 1}
+\author{Drake Svoboda}
+\date{September 2018}
+
+\makeatletter
+\def\@seccntformat#1{%
+  \expandafter\ifx\csname c@#1\endcsname\c@section
+  Question \thesection
+  \else
+  \csname the#1\endcsname\quad
+  \fi}
+\makeatother
+
+\begin{document}
+
+\maketitle
+
+\section{} 
+If the document is only being read by a human being, then faxing the image will be preferred. Faxing will ensure that the person reading the information gets full and un-altered data. If the document has special visual formatting, none of that information will be lost. 
+
+If the document needs to be interpreted by a computer (parsed and entered into some data store, queried, searched, etc.), then the image data will not be in the proper format. A good OCR will convert the image data into text that can be computer interpreted. This method could potentially lose visual information; however, that information may not be relevant in this case.
+
+If there was a perfect OCR that could achieve 100\% accuracy and also preserve visual information, then there would be no downside to using this OCR.
+
+ 
+\section{}
+Assuming the taxi is equipped with the appropriate sensors and cameras, the inputs might include the following: GPS data, speed, camera footage, audio input. Outputs could include throttle, brake, steering angle, turn signals, headlights, selected gear. Passenger communication would require a second set of inputs and outputs. Perhaps a passenger could use a mobile/tablet app to communicate with the taxi. Passengers would enter their desired location and that information would be communicated to the taxi. Passengers could hail a taxi using the same app. The taxi could communicate back to the passenger using the apps interface. 
+
+If there were sufficiently many other automated taxis on the road, communication between taxis would be valuable. Rather than peer-to-peer taxi communication, these taxis could communicate with one central server that could determine which taxi will pick up which passenger. This server could evenly distribute taxis in the area to minimize pick-up times. 
+
+If the roadway was made up of mostly automated taxis, then taxi communication could reduce the likelihood of collisions. Taxis could request lane changes, and neighboring taxis could honor those requests by adjusting speed to make room. Taxis could alert other taxis of upcoming hazards, traffic, red lights, etc.
+
+If the roadway was 100\% automated taxis, then there would be no need for traditional traffic control devices. Taxis could communicate as a network allowing for seamless merging, lane changes, and intersections.
+
+\section{}
+The parameters to a circle would include some center point (\textit{x\textsubscript{1}, x\textsubscript{2}}) and a radius \textit{r}. Perhaps the circle could be chosen by choosing (\textit{x\textsubscript{1}, x\textsubscript{2}}) as the mean of the class in both dimensions and \textit{r} as the maximum distance from that point. A circle is a ‘weak’ function for our hypothesis class because it will only perform well on spherically distributed classes. If our two variables are correlated, then a circle will not be able to fit.  
+
+\section{}
+
+We want to find \textit{w\textsubscript{0}} and \textit{w\textsubscript{1}} to minimize 
+
+\begin{equation} \label{eq:cost}
+C = \frac{1}{N} \sum_t^N (r^{t} - w_{0} - w_{1}x^{t})^2
+\end{equation}
+
+To solve for \textit{w\textsubscript{0}} we take the partial derivative of equation \ref{eq:cost} with respect to \textit{w\textsubscript{0}}
+\[\frac{\partial C}{\partial w_0} = \frac{-2}{N} \sum_t(r^t - w_0 - w_1x^t)\]
+and simplofy
+\begin{equation} \label{eq:w_0_diff}
+\frac{\partial C}{\partial w_0} = -2(\bar{r} - w_0 - w_1\bar{x})
+\end{equation}
+
+Next, we set the left side of equation \ref{eq:w_0_diff} to 0 and solve \textit{w\textsubscript{0}}
+\begin{equation} \label{eq:w_0}
+w_0 = \bar{r} - w_1\bar{x}
+\end{equation}
+
+To solve for \textit{w\textsubscript{1}}, we take the partial derivative of equation \ref{eq:cost} with respect to \textit{w\textsubscript{1}}
+\[\frac{\partial C}{\partial w_1} = \frac{2}{N} \sum_t((r^t - w_0 - w_1x^t)-x^t)\]
+simplify
+\[\frac{\partial C}{\partial w_1} = \frac{2}{N} \sum_t(-x^tr^t + w_0x^t +w_1(x^t)^2)\]
+simplify
+\[\frac{\partial C}{\partial w_1} = 2 (- \frac{x  \bullet r}{N} + w_0\bar{x} +w_1\frac{x  \bullet x}{N})\]
+and substitute \textit{w\textsubscript{0}} with our result from equation \ref{eq:w_0}
+\begin{equation} \label{eq:w_1_diff}
+\frac{\partial C}{\partial w_1} = 2 (- \frac{x  \bullet r}{N} + \bar{r}\bar{x} - w_1\bar{x}^2 +w_1\frac{x  \bullet x}{N})
+\end{equation}
+
+Next, we set the left side of equation \ref{eq:w_1_diff} to 0 and solve for \textit{w\textsubscript{1}}
+\[\frac{x \bullet r}{N} - \bar{r}\bar{x} = w_1(\frac{x \bullet x}{N} - \bar{x}^2)\]
+\[w_1 = \frac{\frac{x  \bullet r}{N} - \bar{r}\bar{x}}{\frac{x  \bullet x}{N} - \bar{x}^2} \]
+
+\begin{equation}
+w_1 = \frac{x  \bullet r - N\bar{r}\bar{x}}{x  \bullet x - N\bar{x}^2} \end{equation} 
+\end{document}
